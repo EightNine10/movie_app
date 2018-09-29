@@ -12,8 +12,9 @@ class Movie
 {
 	var title: String
 	var overview: String
-	var releaseDate: String
 	var voteAverage: Double
+
+	var releaseDate: String
 
 	var imageURL: URL?
 
@@ -21,9 +22,10 @@ class Movie
 	{
 		self.title = json["title"].stringValue
 		self.overview = json["overview"].stringValue
-		self.overview = json["releaseDate"].stringValue
-		self.overview = json["voteAverage"].doubleValue
+		self.voteAverage = json["vote_average"].doubleValue
 
-		self.imageURL = json["poster_path"]
+		self.releaseDate = json["release_date"].stringValue
+
+		self.imageURL = APIManager.shared.createPosterImageURL(posterPath: json["poster_path"].stringValue)
 	}
 }

@@ -8,32 +8,52 @@
 
 import UIKit
 
-class ViewController: UIViewController
+class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
+	@IBOutlet weak var movieCategoryLabel: UILabel!
+	@IBOutlet weak var movieCollectionView: UICollectionView!
+
+	var movies = [Movie]()
+	
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
 
-		let API_KEY = "e8d3cef929e637daff7cc49b853ba05b"
+		self.movieCollectionView.dataSource = self
+		self.movieCollectionView.delegate = self
 
-		if let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(API_KEY)")
-		{
-			let task = URLSession.shared.dataTask(with: url)
-			{ (data, response, error) in
+		APIManager.shared.getTopMovies()
+		{ (movies) in
 
-				if let data = data
-				{
-					do
-					{	let json = try JSON(data: data)
-					}
-					catch
-					{
-					}
-				}
+			self.movies = movies
+
+			DispatchQueue.main.async
+			{	self.movieCollectionView.reloadData()
 			}
-
-			task.resume()
 		}
+	}
+
+	// UICollectionViewDelegateFlowLayout protocol methods
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+	{
+		return CGSize(width: self.movieCollectionView.bounds.width, height: self.movieCollectionView.bounds.height)
+	}
+
+	// UICollectionViewDataSource protocol methods
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+	{
+		return movies.count
+	}
+
+	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+	{
+		if let movieCell = self.movieCollectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as? MovieCollectionViewCell
+		{
+			movieCell.setMovie(self.movies[indexPath.row])
+			return movieCell
+		}
+
+		return UICollectionViewCell()
 	}
 }
 
