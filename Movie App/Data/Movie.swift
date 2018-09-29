@@ -12,7 +12,7 @@ class Movie
 {
 	var title: String
 	var overview: String
-	var voteAverage: Double
+	var voteAverage: String
 
 	var releaseDate: String
 
@@ -22,9 +22,21 @@ class Movie
 	{
 		self.title = json["title"].stringValue
 		self.overview = json["overview"].stringValue
-		self.voteAverage = json["vote_average"].doubleValue
+		self.voteAverage = "\(json["vote_average"].doubleValue) / 10"
 
-		self.releaseDate = json["release_date"].stringValue
+		let dateString = json["release_date"].stringValue
+
+		// Create Date String
+		if let date = dateString.dateFromString(dateFormat: "yyyy-MM-dd")
+		{
+			let releaseDateString = dateString.dateToStyle(dateFormat: "yyyy-MM-dd", dateStyle: .medium)
+			let releaseString = (date.compare(Date()) == .orderedAscending) ? "Released:" : "Releases:"
+
+			self.releaseDate = "\(releaseString) \(releaseDateString)"
+		}
+		else
+		{	self.releaseDate = ""
+		}
 
 		self.imageURL = APIManager.shared.createPosterImageURL(posterPath: json["poster_path"].stringValue)
 	}

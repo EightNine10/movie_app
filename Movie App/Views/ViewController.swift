@@ -10,10 +10,10 @@ import UIKit
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
-	@IBOutlet weak var movieCategoryLabel: UILabel!
 	@IBOutlet weak var movieCollectionView: UICollectionView!
 
 	var movies = [Movie]()
+	var movieListCategory = APIManager.MovieListCategory.nowPlaying
 	
 	override func viewDidLoad()
 	{
@@ -22,7 +22,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		self.movieCollectionView.dataSource = self
 		self.movieCollectionView.delegate = self
 
-		APIManager.shared.getTopMovies()
+		self.refreshData()
+	}
+
+	func refreshData()
+	{
+		APIManager.shared.getMoviesForCategory(self.movieListCategory)
 		{ (movies) in
 
 			self.movies = movies
@@ -33,10 +38,21 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		}
 	}
 
+	@IBAction func toggleCategory(_ sender: UISegmentedControl)
+	{
+		self.movieListCategory = (sender.selectedSegmentIndex == 0) ? .nowPlaying : .topRated
+		self.refreshData()
+	}
+
 	// UICollectionViewDelegateFlowLayout protocol methods
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
 	{
 		return CGSize(width: self.movieCollectionView.bounds.width, height: self.movieCollectionView.bounds.height)
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat
+	{
+		return 0
 	}
 
 	// UICollectionViewDataSource protocol methods

@@ -10,6 +10,12 @@ import Foundation
 
 class APIManager
 {
+	enum MovieListCategory
+	{
+		case nowPlaying
+		case topRated
+	}
+
 	private let API_KEY = "e8d3cef929e637daff7cc49b853ba05b"
 
 	static var shared = APIManager()
@@ -28,15 +34,17 @@ class APIManager
 
 			if let json = json
 			{
-				self.secureBaseUrlString = json["secure_base_url"].stringValue
+				self.secureBaseUrlString = json["images"]["secure_base_url"].stringValue
 				self.configurationComplete = true
 			}
 		}
 	}
 
-	func getTopMovies(completion: @escaping ([Movie]) -> Void)
+	func getMoviesForCategory(_ category: MovieListCategory, completion: @escaping ([Movie]) -> Void)
 	{
-		URLSession.shared.jsonFromUrlString("https://api.themoviedb.org/3/movie/now_playing?api_key=\(API_KEY)")
+		let urlCategoryString = (category == .nowPlaying) ? "now_playing" : "top_rated"
+
+		URLSession.shared.jsonFromUrlString("https://api.themoviedb.org/3/movie/\(urlCategoryString)?api_key=\(API_KEY)")
 		{ (json) in
 
 			var movies = [Movie]()

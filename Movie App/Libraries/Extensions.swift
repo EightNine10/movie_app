@@ -39,3 +39,33 @@ extension URLSession
 		}
 	}
 }
+
+extension String
+{
+	func dateToStyle(dateFormat: String, dateStyle: DateFormatter.Style) -> String
+	{
+		let inputDateFormatter = DateFormatter()
+		inputDateFormatter.dateFormat = dateFormat
+
+		if let date = inputDateFormatter.date(from: self)
+		{
+			let outputDateFormatter = DateFormatter()
+			outputDateFormatter.dateStyle = dateStyle
+			return outputDateFormatter.string(from: date)
+		}
+
+		return self
+	}
+
+	func dateFromString(dateFormat: String) -> Date?
+	{
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = dateFormat
+
+		if let date = dateFormatter.date(from: self)
+		{	return date
+		}
+
+		return nil
+	}
+}
