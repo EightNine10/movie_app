@@ -46,8 +46,8 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ig2-KZ-N2G">
                                                     <rect key="frame" x="0.0" y="493" width="200" height="20"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="width" secondItem="ig2-KZ-N2G" secondAttribute="height" multiplier="10:1" id="5aw-nJ-rIa"/>
                                                         <constraint firstAttribute="height" constant="20" id="J8w-n5-ee1"/>
-                                                        <constraint firstAttribute="width" constant="200" id="ynR-hb-ZC1"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -72,6 +72,7 @@
                                                     <rect key="frame" x="200" y="493" width="134" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="7Nw-7S-fDP"/>
+                                                        <constraint firstAttribute="width" secondItem="Og6-7a-QCw" secondAttribute="height" multiplier="134:21" id="geI-qq-kEg"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -111,17 +112,20 @@
                                             <constraint firstItem="BXe-d5-kxu" firstAttribute="leading" secondItem="EhG-Tg-b2C" secondAttribute="leading" id="LsK-jB-onS"/>
                                             <constraint firstItem="I2K-87-9GP" firstAttribute="leading" secondItem="EhG-Tg-b2C" secondAttribute="leading" id="Q9R-5W-ngW"/>
                                             <constraint firstItem="Og6-7a-QCw" firstAttribute="leading" secondItem="ig2-KZ-N2G" secondAttribute="trailing" id="Qc9-Kr-aHX"/>
-                                            <constraint firstAttribute="trailing" secondItem="ZWa-YC-nmN" secondAttribute="trailing" constant="48" id="RJ3-YA-OsL"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZWa-YC-nmN" secondAttribute="trailing" constant="48" identifier="image_trailing" id="RJ3-YA-OsL"/>
                                             <constraint firstItem="ZWa-YC-nmN" firstAttribute="leading" secondItem="I2K-87-9GP" secondAttribute="trailing" constant="4" id="Tv1-YO-7CE"/>
                                             <constraint firstAttribute="trailing" secondItem="QcW-DR-yAj" secondAttribute="trailing" id="hDU-0B-J0h"/>
                                             <constraint firstItem="QcW-DR-yAj" firstAttribute="top" secondItem="BXe-d5-kxu" secondAttribute="bottom" id="sq7-Y4-5WE"/>
-                                            <constraint firstItem="ZWa-YC-nmN" firstAttribute="leading" secondItem="EhG-Tg-b2C" secondAttribute="leading" constant="48" id="yF2-GC-hYU"/>
+                                            <constraint firstItem="Og6-7a-QCw" firstAttribute="leading" secondItem="ig2-KZ-N2G" secondAttribute="trailing" id="woQ-ux-Sj0"/>
+                                            <constraint firstItem="ZWa-YC-nmN" firstAttribute="leading" secondItem="EhG-Tg-b2C" secondAttribute="leading" constant="48" identifier="image_leading" id="yF2-GC-hYU"/>
                                             <constraint firstItem="E3l-6e-jSS" firstAttribute="leading" secondItem="ZWa-YC-nmN" secondAttribute="trailing" constant="8" id="yNu-ZR-ubS"/>
                                             <constraint firstItem="BXe-d5-kxu" firstAttribute="top" secondItem="E3l-6e-jSS" secondAttribute="bottom" constant="10" id="yP7-zl-UaT"/>
                                             <constraint firstAttribute="trailing" secondItem="Og6-7a-QCw" secondAttribute="trailing" constant="10" id="yVm-oh-ua5"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="favouriteButton" destination="E3l-6e-jSS" id="JcS-ra-VNJ"/>
+                                            <outlet property="imageLeadingConstraint" destination="RJ3-YA-OsL" id="8nH-Jy-Xcz"/>
+                                            <outlet property="imageTrailingConstraint" destination="yF2-GC-hYU" id="neI-Bu-di6"/>
                                             <outlet property="movieImageView" destination="ZWa-YC-nmN" id="hRk-2x-JBE"/>
                                             <outlet property="movieOverviewLabel" destination="QcW-DR-yAj" id="Rpo-dc-hXC"/>
                                             <outlet property="movieReleaseDateLabel" destination="ig2-KZ-N2G" id="MOq-mg-MOm"/>
@@ -129,6 +133,30 @@
                                             <outlet property="movieVoteAverageLabel" destination="Og6-7a-QCw" id="G2T-ie-Up3"/>
                                             <outlet property="pageNumberLabel" destination="I2K-87-9GP" id="LF2-KT-nY7"/>
                                         </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LoadErrorCell" id="hhh-0A-rxP">
+                                        <rect key="frame" x="354" y="65.666666666666671" width="344" height="502"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="344" height="502"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movies could not be loaded. Check your intenet connection and try again." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZW-H6-laA">
+                                                    <rect key="frame" x="0.0" y="0.0" width="344" height="140"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="140" id="CoZ-yr-SBU"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="OZW-H6-laA" firstAttribute="top" secondItem="hhh-0A-rxP" secondAttribute="top" id="TLr-ux-82X"/>
+                                            <constraint firstItem="OZW-H6-laA" firstAttribute="leading" secondItem="hhh-0A-rxP" secondAttribute="leading" id="aOU-N5-bja"/>
+                                            <constraint firstAttribute="trailing" secondItem="OZW-H6-laA" secondAttribute="trailing" id="bSp-CW-upr"/>
+                                        </constraints>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -166,7 +194,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1068" y="129.98500749625188"/>
+            <point key="canvasLocation" x="1068" y="129.31034482758622"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="uot-jR-GJw">

@@ -14,6 +14,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
 	var movies = [Movie]()
 	var movieListCategory = APIManager.MovieListCategory.nowPlaying
+
+	// Used to determine if the network call has failed
+	var movieLoadFailed = false
 	
 	override func viewDidLoad()
 	{
@@ -31,9 +34,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 		{ (movies) in
 
 			self.movies = movies
+			self.movieLoadFailed = (movies.count == 0)
 
 			DispatchQueue.main.async
-			{	self.movieCollectionView.setContentOffset(CGPoint.zero, animated: false)
+			{
+				// Reset CollectionView back to the first cell
+				self.movieCollectionView.setContentOffset(CGPoint.zero, animated: false)
+				
 				self.movieCollectionView.reloadData()
 			}
 		}
@@ -59,12 +66,20 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	// UICollectionViewDataSource protocol methods
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
 	{
+		if self.movieLoadFailed
+		{	return 1
+		}
+
 		return movies.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
 	{
-		if let movieCell = self.movieCollectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as? MovieCollectionViewCell
+		if self.movieLoadFailed
+		{
+			return self.movieCollectionView.dequeueReusableCell(withReuseIdentifier: "LoadErrorCell", for: indexPath)
+		}
+		else if let movieCell = self.movieCollectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as? MovieCollectionViewCell
 		{
 			movieCell.setMovie(self.movies[indexPath.row], index: indexPath.row + 1)
 			return movieCell

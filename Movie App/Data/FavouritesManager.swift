@@ -6,6 +6,8 @@
 //  Copyright © 2018 Peter Rutherford. All rights reserved.
 //
 
+// Singleton class used to manage the favourite movies of the users by Movie ID
+
 import Foundation
 
 class FavouritesManager
@@ -50,6 +52,7 @@ class FavouritesManager
 	func save()
 	{
 		UserDefaults.standard.set(self.favouriteMovies, forKey: "FAVOURITES")
+		UserDefaults.standard.synchronize()
 	}
 
 	func load()

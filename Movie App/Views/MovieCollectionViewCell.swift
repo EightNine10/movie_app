@@ -23,6 +23,9 @@ class MovieCollectionViewCell: UICollectionViewCell
 
 	var movie: Movie?
 	
+	@IBOutlet weak var imageTrailingConstraint: NSLayoutConstraint!
+	@IBOutlet weak var imageLeadingConstraint: NSLayoutConstraint!
+
 	func setMovie(_ movie: Movie, index: Int)
 	{
 		self.movie = movie
@@ -38,6 +41,13 @@ class MovieCollectionViewCell: UICollectionViewCell
 
 		self.setFavouritesButton()
 		self.pageNumberLabel.text = "\(index)/20"
+
+		// Slight constraint modification for iPads
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad)
+		{
+			self.imageTrailingConstraint.constant = 170
+			self.imageLeadingConstraint.constant = 170
+		}
 	}
 
 	func setFavouritesButton()

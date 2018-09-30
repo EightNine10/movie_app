@@ -6,6 +6,8 @@
 //  Copyright © 2018 Peter Rutherford. All rights reserved.
 //
 
+// Data Model to hold a Movie object and its relevant data
+
 import Foundation
 
 class Movie

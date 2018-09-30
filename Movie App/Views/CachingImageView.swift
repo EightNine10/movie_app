@@ -43,6 +43,8 @@ class CachingImageView: UIImageView
 						if self.lastImageURLString == url.absoluteString
 						{
 							self.image = newImage
+
+							// Animate Image in
 							self.alpha = 0
 
 							UIView.animate(withDuration: 0.16)

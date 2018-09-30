@@ -6,6 +6,8 @@
 //  Copyright © 2018 Peter Rutherford. All rights reserved.
 //
 
+// Singleton class used to manage the API calls to the tMDB API
+
 import Foundation
 
 class APIManager
@@ -16,6 +18,7 @@ class APIManager
 		case topRated
 	}
 
+	// Constant API KEY for tMDB account
 	private let API_KEY = "e8d3cef929e637daff7cc49b853ba05b"
 
 	static var shared = APIManager()
@@ -27,7 +30,7 @@ class APIManager
 	{
 	}
 
-	func loadConfiguration()
+	func loadConfiguration(completion: ((Bool) -> Void)?)
 	{
 		URLSession.shared.jsonFromUrlString("https://api.themoviedb.org/3/configuration?api_key=\(API_KEY)")
 		{ (json) in
@@ -36,27 +39,58 @@ class APIManager
 			{
 				self.secureBaseUrlString = json["images"]["secure_base_url"].stringValue
 				self.configurationComplete = true
+
+				completion?(self.configurationComplete)
+			}
+			else
+			{	completion?(false)
+			}
+		}
+	}
+
+	func checkConfiguration(completion: @escaping (Bool) -> Void)
+	{
+		if configurationComplete
+		{	completion(true)
+		}
+		else
+		{
+			self.loadConfiguration()
+			{ (result) in
+
+				completion(result)
 			}
 		}
 	}
 
 	func getMoviesForCategory(_ category: MovieListCategory, completion: @escaping ([Movie]) -> Void)
 	{
-		let urlCategoryString = (category == .nowPlaying) ? "now_playing" : "top_rated"
+		// If initial configuration API failed, it needs to be called before any movie image data can be loaded
+		self.checkConfiguration()
+		{ (result) in
 
-		URLSession.shared.jsonFromUrlString("https://api.themoviedb.org/3/movie/\(urlCategoryString)?api_key=\(API_KEY)")
-		{ (json) in
-
-			var movies = [Movie]()
-
-			if let jsonArray = json?["results"].arrayValue
+			if result
 			{
-				for movieJSON in jsonArray
-				{	movies.append(Movie(json: movieJSON))
+				let urlCategoryString = (category == .nowPlaying) ? "now_playing" : "top_rated"
+
+				URLSession.shared.jsonFromUrlString("https://api.themoviedb.org/3/movie/\(urlCategoryString)?api_key=\(self.API_KEY)")
+				{ (json) in
+
+					var movies = [Movie]()
+
+					if let jsonArray = json?["results"].arrayValue
+					{
+						for movieJSON in jsonArray
+						{	movies.append(Movie(json: movieJSON))
+						}
+					}
+
+					completion(movies)
 				}
 			}
-
-			completion(movies)
+			else
+			{	completion([])
+			}
 		}
 	}
 
