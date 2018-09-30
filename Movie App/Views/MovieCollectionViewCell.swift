@@ -11,23 +11,50 @@ import UIKit
 
 class MovieCollectionViewCell: UICollectionViewCell
 {
-	@IBOutlet weak var movieImageView: UIImageView!
 	@IBOutlet weak var movieTitleLabel: UILabel!
 	@IBOutlet weak var movieOverviewLabel: UILabel!
 	@IBOutlet weak var movieReleaseDateLabel: UILabel!
 	@IBOutlet weak var movieVoteAverageLabel: UILabel!
 
-	func setMovie(_ movie: Movie)
+	@IBOutlet weak var movieImageView: CachingImageView!
+
+	@IBOutlet weak var favouriteButton: UIButton!
+	@IBOutlet weak var pageNumberLabel: UILabel!
+
+	var movie: Movie?
+	
+	func setMovie(_ movie: Movie, index: Int)
 	{
+		self.movie = movie
+
 		self.movieTitleLabel.text = movie.title
 		self.movieOverviewLabel.text = movie.overview
 		self.movieReleaseDateLabel.text = movie.releaseDate
 		self.movieVoteAverageLabel.text = movie.voteAverage
 
-		let data = try? Data(contentsOf: movie.imageURL!)
+		if let url = movie.imageURL
+		{	self.movieImageView.loadImageFromURL(url)
+		}
 
-		if let imageData = data
-		{	self.movieImageView.image = UIImage(data: imageData)
+		self.setFavouritesButton()
+		self.pageNumberLabel.text = "\(index)/20"
+	}
+
+	func setFavouritesButton()
+	{
+		if let movie = self.movie
+		{
+			let favouriteImageName = (FavouritesManager.shared.isFavourite(movieID: movie.movieID)) ? "heart_fill" : "heart_empty"
+			favouriteButton.setImage(UIImage(named: favouriteImageName), for: .normal)
+		}
+	}
+
+	@IBAction func favouritesButtonPressed(_ sender: UIButton)
+	{
+		if let movie = self.movie
+		{
+			FavouritesManager.shared.toggle(movieID: movie.movieID)
+			self.setFavouritesButton()
 		}
 	}
 }

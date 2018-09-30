@@ -33,7 +33,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 			self.movies = movies
 
 			DispatchQueue.main.async
-			{	self.movieCollectionView.reloadData()
+			{	self.movieCollectionView.setContentOffset(CGPoint.zero, animated: false)
+				self.movieCollectionView.reloadData()
 			}
 		}
 	}
@@ -65,7 +66,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 	{
 		if let movieCell = self.movieCollectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as? MovieCollectionViewCell
 		{
-			movieCell.setMovie(self.movies[indexPath.row])
+			movieCell.setMovie(self.movies[indexPath.row], index: indexPath.row + 1)
 			return movieCell
 		}
 

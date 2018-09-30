@@ -10,6 +10,7 @@ import Foundation
 
 class Movie
 {
+	var movieID: Int
 	var title: String
 	var overview: String
 	var voteAverage: String
@@ -20,6 +21,7 @@ class Movie
 
 	init(json: JSON)
 	{
+		self.movieID = json["id"].intValue
 		self.title = json["title"].stringValue
 		self.overview = json["overview"].stringValue
 		self.voteAverage = "\(json["vote_average"].doubleValue) / 10"

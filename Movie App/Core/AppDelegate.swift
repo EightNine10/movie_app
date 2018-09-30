@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
 	{
 		APIManager.shared.loadConfiguration()
+		FavouritesManager.shared.load()
 
 		return true
 	}
